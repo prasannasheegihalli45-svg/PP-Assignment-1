@@ -1,0 +1,27 @@
+# Static site: plain HTML/CSS/JS with no framework, package manager or dependencies.
+#
+# The source files are named "html", "css" and "js" with no file extensions, so they
+# would be served as application/octet-stream and there would be no page at "/".
+# The build step copies them into dist/ under proper names, so each one gets the
+# right Content-Type and index.html is served at the root.
+[build]
+  command = "mkdir -p dist && cp html dist/index.html && cp css dist/style.css && cp js dist/app.js"
+  publish = "dist"
+
+# The page still references "css" and "js" (relative to "/"), so map those paths
+# to the renamed files. A 200 status is a rewrite, so the URL doesn't change.
+[[redirects]]
+  from = "/css"
+  to = "/style.css"
+  status = 200
+
+[[redirects]]
+  from = "/js"
+  to = "/app.js"
+  status = 200
+
+# Keep the original page URL working too.
+[[redirects]]
+  from = "/html"
+  to = "/index.html"
+  status = 200
